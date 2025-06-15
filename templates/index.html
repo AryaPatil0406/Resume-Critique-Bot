@@ -1,0 +1,140 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Critique Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Resume Critique Bot</h1>
+            <nav>
+                <ul>
+                    <li><a href="/" class="active">Upload</a></li>
+                    <li><a href="/history">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="upload-section">
+            <h2>Upload Your Resume</h2>
+            <p>Get personalized feedback on your resume to help you stand out to employers.</p>
+            
+            <form id="resume-form" enctype="multipart/form-data">
+                <div class="file-upload">
+                    <label for="resume">Upload Resume (PDF, DOCX, or TXT)</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.docx,.doc,.txt" required>
+                </div>
+                <button type="submit" id="submit-btn">Analyze Resume</button>
+            </form>
+            
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Analyzing your resume...</p>
+            </div>
+        </section>
+
+        <section id="results" class="results-section hidden">
+            <h2>Resume Analysis</h2>
+            
+            <div class="overall-feedback">
+                <h3>Overall Assessment</h3>
+                <div id="overall"></div>
+            </div>
+            
+            <div class="section-feedback">
+                <h3>Resume Sections</h3>
+                <div id="sections" class="sections-grid"></div>
+            </div>
+            
+            <div class="suggestions">
+                <h3>Improvement Suggestions</h3>
+                <ul id="suggestions-list"></ul>
+            </div>
+            
+            <div class="actions">
+                <button id="download-feedback">Download Feedback</button>
+                <button id="upload-new">Upload New Resume</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Resume Critique Bot</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
+
+<!-- templates/history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume History - Resume Critique Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Resume Critique Bot</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Upload</a></li>
+                    <li><a href="/history" class="active">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="history-section">
+            <h2>Resume History</h2>
+            
+            {% if resumes %}
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Date Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for resume in resumes %}
+                        <tr>
+                            <td>{{ resume.original_filename }}</td>
+                            <td>{{ resume.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <a href="/resumes/{{ resume.id }}" class="view-btn">View Feedback</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No resumes have been uploaded yet.</p>
+            {% endif %}
+            
+            <div class="actions">
+                <a href="/" class="button">Upload New Resume</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Resume Critique Bot</p>
+        </div>
+    </footer>
+</body>
+</html>

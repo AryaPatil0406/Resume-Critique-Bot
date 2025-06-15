@@ -1,0 +1,64 @@
+<!-- templates/history.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume History - Resume Critique Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Resume Critique Bot</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Upload</a></li>
+                    <li><a href="/history" class="active">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="history-section">
+            <h2>Resume History</h2>
+            
+            {% if resumes %}
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Date Uploaded</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for resume in resumes %}
+                        <tr>
+                            <td>{{ resume.original_filename }}</td>
+                            <td>{{ resume.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <a href="/resumes/{{ resume.id }}" class="view-btn">View Feedback</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No resumes have been uploaded yet.</p>
+            {% endif %}
+            
+            <div class="actions">
+                <a href="/" class="button">Upload New Resume</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Resume Critique Bot</p>
+        </div>
+    </footer>
+</body>
+</html>
